@@ -14,8 +14,10 @@
 using namespace QGBA;
 
 ScriptingTextBuffer::ScriptingTextBuffer(QObject* parent)
-	: QObject(parent)
-{
+    : QObject(parent) {
+	QFont font = GBAApp::app()->monospaceFont();
+	font.setPointSize(14);
+
 	m_shim.init = &ScriptingTextBuffer::init;
 	m_shim.deinit = &ScriptingTextBuffer::deinit;
 	m_shim.setName = &ScriptingTextBuffer::setName;
@@ -33,7 +35,8 @@ ScriptingTextBuffer::ScriptingTextBuffer(QObject* parent)
 
 	auto layout = new QPlainTextDocumentLayout(&m_document);
 	m_document.setDocumentLayout(layout);
-	m_document.setDefaultFont(GBAApp::app()->monospaceFont());
+
+	m_document.setDefaultFont(font);
 	m_document.setMaximumBlockCount(m_dims.height());
 
 	QTextOption textOption;
@@ -106,7 +109,7 @@ void ScriptingTextBuffer::moveCursor(const QPoint& pos) {
 			m_shim.cursor.insertBlock();
 		}
 	} else {
-		m_shim.cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, y);		
+		m_shim.cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, y);
 	}
 
 	int x = pos.x();
@@ -138,7 +141,7 @@ void ScriptingTextBuffer::advance(int increment) {
 		}
 	}
 	locker.unlock();
-	moveCursor({x, y});
+	moveCursor({ x, y });
 }
 
 void ScriptingTextBuffer::init(struct mScriptTextBuffer* buffer, const char* name) {

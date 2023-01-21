@@ -16,9 +16,10 @@ QTextCharFormat LogWidget::s_error;
 QTextCharFormat LogWidget::s_prompt;
 
 LogWidget::LogWidget(QWidget* parent)
-	: QPlainTextEdit(parent)
-{
-	setFont(GBAApp::app()->monospaceFont());
+    : QPlainTextEdit(parent) {
+	QFont font = GBAApp::app()->monospaceFont();
+	font.setPointSize(14);
+	setFont(font);
 
 	QPalette palette = QApplication::palette();
 	s_warn.setFontWeight(QFont::DemiBold);
